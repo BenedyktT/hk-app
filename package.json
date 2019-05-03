@@ -12,8 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/BenedyktT/hk-app.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "Benedykt",
   "license": "ISC",
   "bugs": {
@@ -38,5 +37,9 @@
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
     "webpack-dev-server": "^3.3.1"
+  },
+  "dependencies": {
+    "google-spreadsheet": "^2.0.7",
+    "googleapis": "^39.2.0"
   }
 }
