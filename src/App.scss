@@ -26,9 +26,6 @@ ul,Link{
     justify-content: space-around;;;
 }
 
-.rooms-col{
-    
-}
 .report-header{
     display:flex;
     justify-content: space-around;;
@@ -106,3 +103,7 @@ button {
     padding: 0.2rem
 }
 /* Remove excess padding and border in Firefox 4+ */
+
+.room-actions>*{
+    margin:1rem
+}

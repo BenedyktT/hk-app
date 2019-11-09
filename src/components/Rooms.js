@@ -1,60 +1,56 @@
 import React, { Component } from "react";
 import ReportHeader from "./ReportHeader";
 import Room from "./Room";
-import { Context, AppProvider } from "./context";
+
 import { connect } from "react-redux";
-import MapSpreadsheetToStore from "./MapSpreadsheetToStore";
-import { getRooms } from "../actions/roomActions";
+import { getRooms, getRoomsPending } from "../reducers/index";
+import { fetchRooms } from "../actions/roomActions";
 
 class Report extends Component {
-	componentDidMount() {
-		setTimeout(() => {
-			console.log(this.props);
-		}, 1500);
-	}
-	/* 	onSetCleanHandler = (value, id, click) => {
-		!click
-			? value.dispatch({ type: "SET_CLEAN", payload: id })
-			: value.dispatch({ type: "UNSET_CLEAN", payload: id });
+	state = {
+		rooms: []
 	};
-	toggleCheckedOut = ({ dispatch }, id) => {
-		dispatch({ type: "TOGGLE_CHECKOUT", payload: id });
-	}; */
+
+	renderRaport() {
+		try {
+			this.props.rooms.map(room => (
+				<Room
+					key={room.id}
+					roomNote={room.cleaningNote}
+					id={room.id}
+					isCheckedOut={room.isCheckedOut}
+					toggleCheckedOut={this.toggleCheckedOut}
+					roomNumber={room.number}
+					resStatus={room.resStatus}
+					roomStatus={room.roomStatus}
+					onSetCleanHandler={this.onSetCleanHandler}
+				/>
+			));
+		} catch (e) {
+			return <h1>ERROR</h1>;
+		}
+	}
+	onSetCleanHandler = (id, click) => {
+		console.log(id, click);
+	};
+	toggleCheckedOut = id => {
+		console.log(id);
+	};
 
 	render() {
 		return (
 			<div>
-				<MapSpreadsheetToStore />
 				<ReportHeader />
-				{
-					<ul className="report-component">
-						{this.props.rooms.map(room => (
-							<Room
-								key={room.id}
-								roomNote={room.cleaningNote}
-								id={room.id}
-								isCheckedOut={room.isCheckedOut}
-								toggleCheckedOut={this.toggleCheckedOut.bind(this)}
-								roomNumber={room.number}
-								resStatus={room.resStatus}
-								roomStatus={room.roomStatus}
-								onSetCleanHandler={this.onSetCleanHandler.bind(this)}
-							/>
-						))}
-					</ul>
-				}
+				{<ul className="report-component">{this.renderRaport()}</ul>}
 			</div>
 		);
 	}
 }
 const mapStateToProps = state => ({
-	rooms: state
+	rooms: getRooms(state),
+	pending: getRoomsPending(state)
 });
 export default connect(
 	mapStateToProps,
-	{ getRooms }
+	{ fetchRooms }
 )(Report);
-
-{
-	/*  */
-}

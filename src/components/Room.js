@@ -2,10 +2,12 @@ import React from "react";
 import { ReactComponent as Lock } from "../images/locked.svg";
 import { ReactComponent as Cancel } from "../images/cancel.svg";
 import { ReactComponent as Tick } from "../images/tick.svg";
+import { ReactComponent as Tools } from "../images/tools.svg";
 import { Link } from "react-router-dom";
 export default class Rooms extends React.Component {
 	state = {
-		buttonClicked: false
+		buttonClicked: false,
+		id: null
 	};
 	changeStyleOnSetClean = () => {
 		this.setState(() => ({
@@ -21,8 +23,7 @@ export default class Rooms extends React.Component {
 	};
 	render() {
 		return (
-			<Link
-				to={`/rooms/${this.props.id}`}
+			<div
 				className={
 					this.state.buttonClicked ||
 					this.props.roomStatus.toUpperCase() === "CLEAN"
@@ -34,7 +35,7 @@ export default class Rooms extends React.Component {
 				<li>
 					<button
 						className="btn"
-						onClick={this.props.toggleCheckedOut.bind(this, this.props.id)}
+						/* onClick={this.props.toggleCheckedOut.bind(this, this.props.id)} */
 					>
 						{" "}
 						{this.props.isCheckedOut ? (
@@ -48,7 +49,7 @@ export default class Rooms extends React.Component {
 				</li>
 				<li>{this.props.resStatus}</li>
 				<li>{this.props.roomStatus}</li>
-				<li>
+				<li className="room-actions">
 					{this.props.roomStatus.toUpperCase() !== "CLEAN" && (
 						<button
 							onClick={this.onSetClean.bind(
@@ -64,8 +65,11 @@ export default class Rooms extends React.Component {
 							/>
 						</button>
 					)}
+					<Link to={`/rooms/${this.props.id}`}>
+						<Tools height="20px" width="20px" />
+					</Link>
 				</li>
-			</Link>
+			</div>
 		);
 	}
 }
