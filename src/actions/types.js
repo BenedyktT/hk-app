@@ -4,6 +4,7 @@ export const GET_ROOMS_SUCCESS = "GET_ROOMS_SUCCESS";
 export const SET_CLEAN = "SET_CLEAN";
 export const UNSET_CLEAN = "UNSET_CLEAN";
 export const TOGGLE_CHECKOUT = "TOGGLE_CHECKOUT";
+
 /* export const DELETE_CONTACT = "DELETE_CONTACTS";
 export const ADD_CONTACT = "ADD_CONTACT";
 export const UPDATE_CONTACT = "UPDATE_CONTACT";

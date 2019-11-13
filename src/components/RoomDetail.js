@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getRooms, getRoomsPending } from "../reducers/index";
+
 import { fetchRooms } from "../actions/roomActions";
 
 class RoomDetail extends Component {
-	state = {
-		rooms: null
-	};
-	componentDidMount() {
-		this.props.fetchRooms();
-	}
+	state = {};
+
 	shouldComponentRender() {
 		const { pending } = this.props;
 		if (pending === false) {
@@ -21,11 +17,26 @@ class RoomDetail extends Component {
 	renderRoom() {
 		const { rooms } = this.props;
 		const room = rooms.filter(e => {
-			console.log(e.id === this.props.match.params.id);
-			return e.id == this.props.match.params.id;
+			return e.id === this.props.match.params.id;
 		});
-		console.log(room);
-		return <h1>room</h1>;
+		const {
+			number,
+			roomStatus,
+			resStatus,
+			cleaningNote,
+			isCheckedOut
+		} = room[0];
+		return (
+			<div className="">
+				<ul>
+					<li>{number}</li>
+					<li>{roomStatus}</li>
+					<li>{resStatus}</li>
+					<li>{cleaningNote}</li>
+					<li>{isCheckedOut ? "checked out" : "not checked out yet"}</li>
+				</ul>
+			</div>
+		);
 	}
 	render() {
 		if (this.shouldComponentRender()) return <h1>PENDING</h1>;
@@ -34,8 +45,8 @@ class RoomDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-	rooms: getRooms(state),
-	pending: getRoomsPending(state)
+	rooms: state.rooms,
+	pending: state.pending
 });
 export default connect(
 	mapStateToProps,

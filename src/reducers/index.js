@@ -24,9 +24,14 @@ export default function(state = initialState, action) {
 				pending: false
 			};
 		case SET_CLEAN:
-			return state.rooms.find(element =>
-				element.id === action.payload ? (element.roomStatus = "Ready") : null
-			);
+			return {
+				...state,
+				rooms: state.rooms.map(room =>
+					room.id === action.payload.id
+						? { ...room, roomStatus: "READY" }
+						: room
+				)
+			};
 		case UNSET_CLEAN:
 			return state.rooms.find(element =>
 				element.id === action.payload

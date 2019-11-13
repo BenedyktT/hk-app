@@ -10,9 +10,9 @@ import uuid from "uuid";
 
 export const fetchRooms = () => dispatch => {
 	dispatch(getRoomsPending());
+
 	Tabletop.init({
-		key:
-			"https://docs.google.com/spreadsheets/d/1VNSbty91bi83frVi3GQlmgnxiCLDKmAxA8ys3AVZ-Oc/edit?usp=sharing",
+		key: process.env.REACT_APP_API_KEY,
 		simpleSheet: true
 	}).then(data => {
 		const reportData = data.map(
@@ -27,16 +27,15 @@ export const fetchRooms = () => dispatch => {
 					roomStatus,
 					resStatus,
 					cleaningNote,
-					isCheckedOut: false
+					isCheckedOut: false,
+					id: uuid()
 				};
 			}
 		);
-		const roomId = reportData.map(room => {
-			return { ...room, id: uuid() };
-		});
-		console.log(roomId);
-		dispatch(getRoomsSuccess(roomId));
-		return roomId;
+		/* const onSetChange = dispatch(onSetChange()); */
+
+		dispatch(getRoomsSuccess(reportData));
+		return reportData;
 	});
 };
 
@@ -52,7 +51,7 @@ export const getRoomsSuccess = rooms => {
 	};
 };
 
-export const setRoomClean = id => {
+export const setRoomClean = (id, state) => {
 	return {
 		type: SET_CLEAN,
 		payload: id

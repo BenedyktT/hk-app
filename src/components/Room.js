@@ -4,24 +4,31 @@ import { ReactComponent as Cancel } from "../images/cancel.svg";
 import { ReactComponent as Tick } from "../images/tick.svg";
 import { ReactComponent as Tools } from "../images/tools.svg";
 import { Link } from "react-router-dom";
-export default class Rooms extends React.Component {
+import { connect } from "react-redux";
+
+class Rooms extends React.Component {
 	state = {
 		buttonClicked: false,
 		id: null
 	};
+
 	changeStyleOnSetClean = () => {
 		this.setState(() => ({
 			buttonClicked: !this.state.buttonClicked
 		}));
 	};
-	onSetClean = (id, click) => {
+	onSetClean = id => {
 		this.changeStyleOnSetClean();
-		this.props.onSetCleanHandler(id, click);
+
+		this.props.onSetRoomClean(id);
 	};
 	toggleCheckedOut = id => {
 		this.props.toggleCheckedOut(id);
 	};
 	render() {
+		{
+			/* console.log(this.props); */
+		}
 		return (
 			<div
 				className={
@@ -51,13 +58,7 @@ export default class Rooms extends React.Component {
 				<li>{this.props.roomStatus}</li>
 				<li className="room-actions">
 					{this.props.roomStatus.toUpperCase() !== "CLEAN" && (
-						<button
-							onClick={this.onSetClean.bind(
-								this,
-								this.props.id,
-								this.state.buttonClicked
-							)}
-						>
+						<button onClick={this.onSetClean.bind(this, this.props.id)}>
 							<Lock
 								width="20px"
 								height="20px"
@@ -73,3 +74,10 @@ export default class Rooms extends React.Component {
 		);
 	}
 }
+const mapStateToProps = state => ({
+	rooms: state.rooms
+});
+export default connect(
+	mapStateToProps,
+	null
+)(Rooms);
