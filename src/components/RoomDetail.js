@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
+import classnames from "classnames";
 import { fetchRooms } from "../actions/roomActions";
 
 class RoomDetail extends Component {
@@ -11,7 +11,6 @@ class RoomDetail extends Component {
 		if (pending === false) {
 			return false;
 		}
-		// more tests
 		return true;
 	}
 	renderRoom() {
@@ -27,14 +26,44 @@ class RoomDetail extends Component {
 			isCheckedOut
 		} = room[0];
 		return (
-			<div className="">
-				<ul>
-					<li>{number}</li>
-					<li>{roomStatus}</li>
+			<div className="room-detail">
+				<ul className="room-detail__elements">
+					<li className="success">{number}</li>
+					<li className={classnames({ success: roomStatus !== "Not Clean" })}>
+						{roomStatus}
+					</li>
 					<li>{resStatus}</li>
-					<li>{cleaningNote}</li>
-					<li>{isCheckedOut ? "checked out" : "not checked out yet"}</li>
+					{cleaningNote && <li>{cleaningNote}</li>}
+					<li
+						className={classnames({
+							success: isCheckedOut,
+							danger: !isCheckedOut
+						})}
+					>
+						{isCheckedOut ? "checked out" : "not checked out yet"}
+					</li>
 				</ul>
+				<div className="maintaince">
+					<h3>Maintaince/Shoplist room: {number}</h3>
+					<table className="greyGridTable">
+						<thead>
+							<tr>
+								<th>Room</th>
+								<th>Bathroom</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Kettle</td>
+								<td>Tap</td>
+							</tr>
+							<tr>
+								<td>entry</td>
+								<td>Shower</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		);
 	}
@@ -45,10 +74,7 @@ class RoomDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-	rooms: state.rooms,
-	pending: state.pending
+	rooms: state.roomActionsReducer.rooms,
+	pending: state.roomActionsReducer.pending
 });
-export default connect(
-	mapStateToProps,
-	{ fetchRooms }
-)(RoomDetail);
+export default connect(mapStateToProps, { fetchRooms })(RoomDetail);

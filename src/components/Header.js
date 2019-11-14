@@ -49,6 +49,6 @@ const imageStyles = {
 };
 
 export default connect(
-	state => ({ rooms: state.rooms }),
+	state => ({ rooms: state.roomActionsReducer.rooms }),
 	null
 )(Header);

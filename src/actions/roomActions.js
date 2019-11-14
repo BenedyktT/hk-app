@@ -2,8 +2,8 @@ import {
 	SET_CLEAN,
 	UNSET_CLEAN,
 	TOGGLE_CHECKOUT,
-	GET_ROOMS_PENDING,
-	GET_ROOMS_SUCCESS
+	GET_ROOMS_SUCCESS,
+	GET_ROOMS_PENDING
 } from "./types";
 import Tabletop from "tabletop";
 import uuid from "uuid";
@@ -32,8 +32,6 @@ export const fetchRooms = () => dispatch => {
 				};
 			}
 		);
-		/* const onSetChange = dispatch(onSetChange()); */
-
 		dispatch(getRoomsSuccess(reportData));
 		return reportData;
 	});

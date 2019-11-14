@@ -3,26 +3,35 @@ import "./App.scss";
 import Header from "./components/Header";
 import Rooms from "./components/Rooms";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Maintaince from "./components/Maintaince";
 import RoomDetail from "./components/RoomDetail";
-import { Provider } from "react-redux";
-import store from "./store";
+import Home from "./components/Home";
+import { rrfProps } from "./store";
+import { fetchRooms } from "./actions/roomActions";
+import { connect } from "react-redux";
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 
 class App extends React.Component {
+	componentDidMount() {}
 	render() {
 		return (
-			<Provider store={store}>
+			<ReactReduxFirebaseProvider {...rrfProps}>
 				<Router>
 					<div className="App">
 						<Header />
 						<Switch>
-							<Route path="/" exact component={Rooms} />
+							<Route path="/" exact component={Home} />
+							<Route path="/maintaince" exact component={Maintaince} />
+							<Route path="/report" exact component={Rooms} />
 							<Route path="/rooms/:id" component={RoomDetail} />
 						</Switch>
 					</div>
 				</Router>
-			</Provider>
+			</ReactReduxFirebaseProvider>
 		);
 	}
 }
 
-export default App;
+export default connect(null, {
+	fetchRooms
+})(App);

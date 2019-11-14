@@ -26,9 +26,6 @@ class Rooms extends React.Component {
 		this.props.toggleCheckedOut(id);
 	};
 	render() {
-		{
-			/* console.log(this.props); */
-		}
 		return (
 			<div
 				className={
@@ -39,45 +36,44 @@ class Rooms extends React.Component {
 				}
 			>
 				<div className="room__bg"></div>
-				<li>
-					<button
-						className="btn"
-						/* onClick={this.props.toggleCheckedOut.bind(this, this.props.id)} */
-					>
-						{" "}
-						{this.props.isCheckedOut ? (
-							<Tick width="20px" height="20px" />
-						) : (
-							<Cancel width="20px" height="20px" />
-						)}
-					</button>
-					{this.props.roomNumber}
-					{this.props.roomNote && <p className="">{this.props.roomNote}</p>}
-				</li>
-				<li>{this.props.resStatus}</li>
-				<li>{this.props.roomStatus}</li>
-				<li className="room-actions">
-					{this.props.roomStatus.toUpperCase() !== "CLEAN" && (
-						<button onClick={this.onSetClean.bind(this, this.props.id)}>
-							<Lock
-								width="20px"
-								height="20px"
-								fill={this.state.buttonClicked ? "green" : null}
-							/>
+				<ul className="room__elements">
+					<li>
+						<button
+							className=""
+							/* onClick={this.props.toggleCheckedOut.bind(this, this.props.id)} */
+						>
+							{" "}
+							{this.props.isCheckedOut ? (
+								<Tick width="20px" height="20px" />
+							) : (
+								<Cancel width="20px" height="20px" />
+							)}
 						</button>
-					)}
-					<Link to={`/rooms/${this.props.id}`}>
-						<Tools height="20px" width="20px" />
-					</Link>
-				</li>
+						{this.props.roomNumber}
+						{this.props.roomNote && <p className="">{this.props.roomNote}</p>}
+					</li>
+					<li>{this.props.resStatus}</li>
+					<li>{this.props.roomStatus}</li>
+					<li className="room-actions">
+						{this.props.roomStatus.toUpperCase() !== "CLEAN" && (
+							<button onClick={this.onSetClean.bind(this, this.props.id)}>
+								<Lock
+									width="20px"
+									height="20px"
+									fill={this.state.buttonClicked ? "green" : null}
+								/>
+							</button>
+						)}
+						<Link to={`/rooms/${this.props.id}`}>
+							<Tools height="20px" width="20px" />
+						</Link>
+					</li>
+				</ul>
 			</div>
 		);
 	}
 }
 const mapStateToProps = state => ({
-	rooms: state.rooms
+	rooms: state.roomActionsReducer.rooms
 });
-export default connect(
-	mapStateToProps,
-	null
-)(Rooms);
+export default connect(mapStateToProps, null)(Rooms);

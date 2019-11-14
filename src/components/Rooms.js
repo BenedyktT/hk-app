@@ -10,9 +10,7 @@ class Report extends Component {
 		rooms: []
 	};
 	componentDidMount() {
-		if (!this.props.rooms) {
-			this.props.fetchRooms();
-		}
+		this.props.fetchRooms();
 	}
 	static getDerivedStateFromProps(props, state) {
 		if (props.rooms) {
@@ -20,6 +18,7 @@ class Report extends Component {
 				rooms: props.rooms
 			};
 		}
+
 		return null;
 	}
 	onSetRoomClean = id => {
@@ -53,10 +52,11 @@ class Report extends Component {
 	}
 }
 const mapStateToProps = state => ({
-	rooms: state.rooms,
-	pending: state.pending
+	rooms: state.roomActionsReducer.rooms,
+	pending: state.roomActionsReducer.pending,
+	maintaince: state.roomActionsReducer.maintaince
 });
-export default connect(
-	mapStateToProps,
-	{ fetchRooms, setRoomClean }
-)(Report);
+export default connect(mapStateToProps, {
+	fetchRooms,
+	setRoomClean
+})(Report);
