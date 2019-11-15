@@ -33,9 +33,9 @@ class Header extends React.Component {
 						<img style={imageStyles} src={logo} alt="" />
 					</Link>
 				</div>
-				<div className="div">
-					Today there are {roomsToClean.length} rooms to clean
-				</div>
+				{roomsToClean.length ? (
+					<div className="div">{roomsToClean.length} rooms to clean</div>
+				) : null}
 				<div className="date">{moment().format("Do MMMM")}</div>
 			</nav>
 		);

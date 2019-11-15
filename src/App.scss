@@ -119,14 +119,22 @@ button {
 
 .room-detail{
     width:100%;
+    display:grid;
+    grid-template-columns:  1fr;
+    align-items: center;
+    
 
 }
 
 .room-detail__elements{
+    display:grid;
+    grid-template-columns: 100% 1fr;
+    grid-gap:1rem;
+    align-items: center;
     text-align: center;
     margin-bottom:0;
 
-    li{
+    .room-detail__room{
         padding:1rem;
         border: 1px solid grey
     }
@@ -211,4 +219,40 @@ button {
    .danger-color{
        color:red;
         opacity: 0.5
+   }
+
+   .add-room{
+       display:grid;
+       grid-template-columns: 1fr 1fr;
+       justify-items: center;
+
+  
+   }
+   .form-group{
+       display:flex;
+       justify-content: space-between;;
+       input{
+        margin:0.3rem 0
+       }
+   }
+   .form-group__number{grid-column: 1/-1;}
+   .form-group__bathroom{
+    
+    display:flex;
+    flex-direction: column;
+   }
+   .form-group__room{
+    display:flex;
+    flex-direction: column;
+   }
+   .add-room__submit{
+       grid-column: 1/-1;
+       margin-top:1rem
+   }
+
+   .rooms{
+       width:80%;
+       margin-left:1rem;
+       display:grid;
+       grid-template-columns: 1fr;
    }

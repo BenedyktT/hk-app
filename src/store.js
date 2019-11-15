@@ -7,7 +7,7 @@ import "firebase/firestore";
 import { createFirestoreInstance } from "redux-firestore";
 
 const firebaseConfig = {
-	apiKey: "AIzaSyAlauUujp--1178ZCk3hWjtmjauWLRZ_sI",
+	apiKey: process.env.REACT_APP_FIREBASE_KEY,
 	authDomain: "hkapp-257620.firebaseapp.com",
 	databaseURL: "https://hkapp-257620.firebaseio.com",
 	projectId: "hkapp-257620",
