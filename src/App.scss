@@ -225,6 +225,9 @@ button {
        display:grid;
        grid-template-columns: 1fr 1fr;
        justify-items: center;
+       grid-gap:1rem;
+       margin:1rem 0;
+       align-items: center;;
 
   
    }
@@ -235,7 +238,13 @@ button {
         margin:0.3rem 0
        }
    }
-   .form-group__number{grid-column: 1/-1;}
+   .form-group__number{grid-column: 1/-1;
+    label{
+        align-self: center;
+    }
+input{
+    padding:1rem;
+}}
    .form-group__bathroom{
     
     display:flex;
@@ -255,4 +264,10 @@ button {
        margin-left:1rem;
        display:grid;
        grid-template-columns: 1fr;
+   }
+
+
+   .addroom-input{
+       width:80%;
+       padding:1rem
    }

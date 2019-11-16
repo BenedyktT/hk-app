@@ -7,6 +7,7 @@ import {
 } from "./types";
 import Tabletop from "tabletop";
 import uuid from "uuid";
+import moment from "moment";
 
 export const fetchRooms = () => dispatch => {
 	dispatch(getRoomsPending());
@@ -28,7 +29,8 @@ export const fetchRooms = () => dispatch => {
 					resStatus,
 					cleaningNote,
 					isCheckedOut: false,
-					id: uuid()
+					id: uuid(),
+					createdAt: moment().unix()
 				};
 			}
 		);
