@@ -3,8 +3,7 @@ import {
 	UNSET_CLEAN,
 	TOGGLE_CHECKOUT,
 	GET_ROOMS_PENDING,
-	GET_ROOMS_SUCCESS,
-	REPORT_TO_FIREBASE
+	GET_ROOMS_SUCCESS
 } from "../actions/types";
 const initialState = {
 	rooms: [],

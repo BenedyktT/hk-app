@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import ReportHeader from "./ReportHeader";
 import Room from "./Room";
-import { compose } from "redux";
+
 import { connect } from "react-redux";
 import { fetchRooms, setRoomClean } from "../actions/roomActions";
-import { firestoreConnect } from "react-redux-firebase";
-import moment from "moment";
 
 class Report extends Component {
 	state = {
@@ -16,27 +14,6 @@ class Report extends Component {
 	}
 	static getDerivedStateFromProps(props, state) {
 		if (props.rooms) {
-			/*  props.rooms.map(
-				({
-					cleaningNote,
-					createdAt,
-					isCheckedOut,
-					number,
-					resStatus,
-					roomStatus
-				}) =>
-					firestore.add(
-						{ collection: "hkSheet" },
-						{
-							cleaningNote,
-							createdAt,
-							isCheckedOut,
-							number,
-							resStatus,
-							roomStatus
-						}
-					)
-			); */
 			return {
 				rooms: props.rooms
 			};
@@ -77,13 +54,9 @@ class Report extends Component {
 const mapStateToProps = state => ({
 	rooms: state.roomActionsReducer.rooms,
 	pending: state.roomActionsReducer.pending,
-	maintaince: state.roomActionsReducer.maintaince,
-	hkSheet: state.firestore.ordered
+	maintaince: state.roomActionsReducer.maintaince
 });
-export default compose(
-	firestoreConnect(() => [{ collection: "hkSheet" }]),
-	connect(mapStateToProps, {
-		fetchRooms,
-		setRoomClean
-	})
-)(Report);
+export default connect(mapStateToProps, {
+	fetchRooms,
+	setRoomClean
+})(Report);

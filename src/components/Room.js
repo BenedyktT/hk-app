@@ -64,9 +64,9 @@ class Rooms extends React.Component {
 								/>
 							</button>
 						)}
-						{/* <Link to={`/rooms/${this.props.id}`}>
+						<Link to={`/rooms/${this.props.id}`}>
 							<Tools height="20px" width="20px" />
-						</Link> */}
+						</Link>
 					</li>
 				</ul>
 			</div>

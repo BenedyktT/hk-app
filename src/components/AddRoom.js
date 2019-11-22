@@ -1,34 +1,48 @@
 import React, { Component } from "react";
 import { firestoreConnect } from "react-redux-firebase";
-import {
-	createInputElement,
-	onBathroomChange,
-	onRoomChange
-} from "../actions/maintainceActions";
-import { connect } from "react-redux";
+
 import FormInput from "./FormInput";
-import { compose } from "redux";
 
 class AddRoom extends Component {
 	state = {
-		number: ""
+		roomInputs: [],
+		bathroomInputs: [],
+		number: "",
+		bathroomValue: "",
+		roomValue: "",
+		bathroomArr: "",
+		roomArr: ""
 	};
 	onBathroomChange = e => {
+		const targetName = e.target.name;
 		const targetValue = e.target.value;
-		this.props.onBathroomChange(targetValue);
+		this.setState(state => {
+			return {
+				bathroomValue: targetValue,
+				bathroomArr: { ...state.bathroomArr, targetValue }
+			};
+		});
 	};
 	onRoomChange = e => {
 		const targetValue = e.target.value;
-		this.props.onRoomChange(targetValue);
+		const targetName = e.target.name;
+		this.setState(state => {
+			return {
+				roomValue: targetValue,
+				roomArr: { ...state.roomArr, [targetName]: targetValue }
+			};
+		});
 	};
 	createInputElement = e => {
 		e.preventDefault();
 		const inputType = e.currentTarget.id;
-		this.props.createInputElement(inputType);
+		this.setState(state => ({
+			[inputType]: [...state[inputType], `input-${state[inputType].length}`]
+		}));
 	};
 	onAddRoom = e => {
-		const { firestore, history, bathroomArr, roomArr } = this.props;
-		const { number } = this.state;
+		const { firestore, history } = this.props;
+		const { number, bathroomArr, roomArr } = this.state;
 		e.preventDefault();
 		const bathroom = Object.values(bathroomArr);
 		const room = Object.values(roomArr);
@@ -44,14 +58,10 @@ class AddRoom extends Component {
 	render() {
 		return (
 			<div>
-				<h1>Add Room</h1>
 				<form onSubmit={this.onAddRoom} className="add-room">
 					<div className="form-group form-group__number">
 						<label htmlFor="number">Number: </label>
 						<input
-							min="3"
-							max="417"
-							placeholder="room"
 							value={this.state.number}
 							onChange={e => {
 								const number = e.target.value;
@@ -63,7 +73,7 @@ class AddRoom extends Component {
 					</div>
 					<div className="form-group form-group__bathroom">
 						<label htmlFor="room">Room list: </label>
-						{this.props.roomInputs.map(input => (
+						{this.state.roomInputs.map(input => (
 							<FormInput
 								onInputChange={this.onRoomChange.bind(this)}
 								value={this.state.bathroomListValue}
@@ -81,7 +91,7 @@ class AddRoom extends Component {
 					<div className="form-group form-group__room">
 						<label htmlFor="bathroom">Bathroom list: </label>
 						<div className="bathroom-inputs">
-							{this.props.bathroomInputs.map(input => (
+							{this.state.bathroomInputs.map(input => (
 								<FormInput
 									onInputChange={this.onBathroomChange.bind(this)}
 									value={this.state.roomListValue}
@@ -106,17 +116,4 @@ class AddRoom extends Component {
 	}
 }
 
-export default compose(
-	firestoreConnect(() => [{ collection: "rooms" }]),
-	connect(
-		state => ({
-			bathroomInputs: state.maintainceActionsReducer.bathroomInputs,
-			roomInputs: state.maintainceActionsReducer.roomInputs,
-			bathroomValue: state.maintainceActionsReducer.bathroomValue,
-			roomValue: state.maintainceActionsReducer.roomValue,
-			bathroomArr: state.maintainceActionsReducer.bathroomArr,
-			roomArr: state.maintainceActionsReducer.roomArr
-		}),
-		{ createInputElement, onBathroomChange, onRoomChange }
-	)
-)(AddRoom);
+export default firestoreConnect(() => [{ collection: "rooms" }])(AddRoom);
