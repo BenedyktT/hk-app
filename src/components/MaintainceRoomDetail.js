@@ -2,21 +2,62 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
+import { createInputElement } from "../actions/maintainceActions";
 
 class MaintainceRoomDetail extends Component {
 	state = {
-		isDetailsClicked: false
+		isDetailsClicked: false,
+		roomValue: "",
+		bathroomValue: "",
+		isBathroomAddItemClicked: false,
+		isRoomAddItemClicked: false
 	};
-	removeItem = (item, e) => {
-		const currentCategory = e.currentTarget.id;
-		const { number, room, bathroom } = this.props;
-		const itemToUpd = {};
+	onValueChange = e => {
+		const value = e.target.value;
+		const name = e.target.name;
+		this.setState(() => ({
+			[name]: value
+		}));
+	};
+	onRoomSubmit = e => {
+		e.preventDefault();
+		const formType = e.target.id;
+		const { bathroomValue, roomValue } = this.state;
+		const { bathroom, room, rooms, firestore } = this.props;
+
+		const updRoom = {
+			...rooms,
+			bathroom: bathroomValue ? [...bathroom, bathroomValue] : [...bathroom],
+			room: roomValue ? [...room, roomValue] : [...room]
+		};
+
+		firestore.update({ collection: "rooms", doc: rooms.id }, updRoom);
+		this.setState(() => ({
+			isBathroomAddItemClicked: false,
+			isRoomAddItemClicked: false,
+			bathroomValue: "",
+			roomValue: ""
+		}));
+	};
+	addItemToRoom = e => {
+		const currentColumn = e.currentTarget.id;
+		currentColumn === "addToRoom"
+			? this.setState(() => ({
+					isRoomAddItemClicked: !this.state.isRoomAddItemClicked
+			  }))
+			: this.setState(() => ({
+					isBathroomAddItemClicked: !this.state.isBathroomAddItemClicked
+			  }));
+	};
+	removeItem = item => {
+		const { firestore, number, room, bathroom, id } = this.props;
 		const updRoom = {
 			number,
-			room: [],
-			bathroom: ["kettle"]
+			room: room.filter(e => e !== item),
+			bathroom: bathroom.filter(e => e !== item)
 		};
-		console.log(itemToUpd);
+
+		firestore.update({ collection: "rooms", doc: id }, updRoom);
 	};
 	removeRoom = () => {
 		const { id, firestore } = this.props;
@@ -24,6 +65,7 @@ class MaintainceRoomDetail extends Component {
 	};
 	render() {
 		const { number, room, bathroom } = this.props;
+		const { isBathroomAddItemClicked, isRoomAddItemClicked } = this.state;
 		return (
 			<div className="room-detail">
 				<ul className="room-detail__elements">
@@ -58,7 +100,22 @@ class MaintainceRoomDetail extends Component {
 										</button>
 									</li>
 								))}
+								{isBathroomAddItemClicked && (
+									<form id="bathroom" onSubmit={this.onRoomSubmit}>
+										<input
+											className="addroom-input"
+											name="bathroomValue"
+											type="text"
+											value={this.state.bathroomValue}
+											onChange={this.onValueChange}
+										/>
+									</form>
+								)}
 							</ul>
+
+							<button id="addToBathroom" onClick={this.addItemToRoom}>
+								<i style={{ color: "green" }} className="fas fa-plus"></i>
+							</button>
 						</div>
 
 						<div className="bathroom-col col">
@@ -75,7 +132,21 @@ class MaintainceRoomDetail extends Component {
 										</button>
 									</li>
 								))}
+								{isRoomAddItemClicked && (
+									<form id="room" onSubmit={this.onRoomSubmit}>
+										<input
+											className="addroom-input"
+											name="roomValue"
+											type="text"
+											value={this.state.roomValue}
+											onChange={this.onValueChange}
+										/>
+									</form>
+								)}
 							</ul>
+							<button id="addToRoom" onClick={this.addItemToRoom}>
+								<i style={{ color: "green" }} className="fas fa-plus"></i>
+							</button>
 						</div>
 					</div>
 				)}
@@ -86,7 +157,10 @@ class MaintainceRoomDetail extends Component {
 
 export default compose(
 	firestoreConnect(() => [{ collection: "rooms" }]),
-	connect(state => ({
-		rooms: state.firestore.ordered.rooms
-	}))
+	connect(
+		state => ({
+			rooms: state.firestore.ordered.rooms[0]
+		}),
+		{ createInputElement }
+	)
 )(MaintainceRoomDetail);
