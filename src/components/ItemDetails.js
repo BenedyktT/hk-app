@@ -22,7 +22,7 @@ const ItemDetails = function(props) {
 			} else if (filterRoom.length) {
 				currentRoomItem = filterRoom[0].item;
 			}
-			const { createdAt, itemID, name } = currentRoomItem;
+			const { createdAt, name } = currentRoomItem;
 			return (
 				<div className="item-detail-container">
 					<h1>Room number {number}</h1>

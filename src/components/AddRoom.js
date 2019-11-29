@@ -49,13 +49,7 @@ class AddRoom extends Component {
 	};
 	onAddRoom = e => {
 		const { firestore, history } = this.props;
-		const {
-			number,
-			bathroomArr,
-			roomArr,
-			bathroomValue,
-			roomValue
-		} = this.state;
+		const { bathroomArr, roomArr } = this.state;
 		e.preventDefault();
 
 		const bathroom = Object.values(bathroomArr);
@@ -100,17 +94,20 @@ class AddRoom extends Component {
 							name="number"
 						/>
 					</div>
-					<div className="form-group form-group__bathroom">
+					<div className="form-group form-group__bathroom ">
 						<label htmlFor="room">Room list: </label>
-						{this.state.roomInputs.map(input => (
-							<FormInput
-								onInputChange={this.onRoomChange.bind(this)}
-								value={this.state.bathroomListValue}
-								key={input}
-								name="room"
-								keyValue={input}
-							/>
-						))}
+						<div className="room-inputs new-input">
+							{this.state.roomInputs.map(input => (
+								<FormInput
+									onInputChange={this.onRoomChange.bind(this)}
+									value={this.state.bathroomListValue}
+									key={input}
+									name="room"
+									keyValue={input}
+								/>
+							))}
+						</div>
+
 						{
 							<button id="roomInputs" onClick={this.createInputElement}>
 								<i style={{ color: "green" }} className="fas fa-plus"></i>
@@ -119,7 +116,7 @@ class AddRoom extends Component {
 					</div>
 					<div className="form-group form-group__room">
 						<label htmlFor="bathroom">Bathroom list: </label>
-						<div className="bathroom-inputs">
+						<div className="bathroom-inputs new-input">
 							{this.state.bathroomInputs.map(input => (
 								<FormInput
 									onInputChange={this.onBathroomChange.bind(this)}

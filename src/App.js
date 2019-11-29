@@ -5,7 +5,7 @@ import Rooms from "./components/Rooms";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Maintaince from "./components/Maintaince";
 import RoomDetail from "./components/RoomDetail";
-import Home from "./components/Home";
+/* import Home from "./components/Home"; */
 import { rrfProps } from "./store";
 import { fetchRooms } from "./actions/roomActions";
 import { connect } from "react-redux";
