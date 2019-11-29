@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { firestoreConnect } from "react-redux-firebase";
+import uuid from "uuid";
 
 import FormInput from "./FormInput";
 import moment from "moment";
@@ -20,7 +21,10 @@ class AddRoom extends Component {
 		this.setState(state => {
 			return {
 				bathroomValue: targetValue,
-				bathroomArr: { ...state.bathroomArr, targetValue }
+				bathroomArr: {
+					...state.bathroomArr,
+					[targetName]: targetValue
+				}
 			};
 		});
 	};
@@ -30,7 +34,10 @@ class AddRoom extends Component {
 		this.setState(state => {
 			return {
 				roomValue: targetValue,
-				roomArr: { ...state.roomArr, [targetName]: targetValue }
+				roomArr: {
+					...state.roomArr,
+					[targetName]: targetValue
+				}
 			};
 		});
 	};
@@ -43,19 +50,41 @@ class AddRoom extends Component {
 	};
 	onAddRoom = e => {
 		const { firestore, history } = this.props;
-		const { number, bathroomArr, roomArr } = this.state;
+		const {
+			number,
+			bathroomArr,
+			roomArr,
+			bathroomValue,
+			roomValue
+		} = this.state;
 		e.preventDefault();
+
 		const bathroom = Object.values(bathroomArr);
 		const room = Object.values(roomArr);
+
 		const newRoom = {
-			bathroom,
-			number,
-			room
+			bathroom: bathroom.map(item => ({
+				item: {
+					name: item,
+					createdAt: moment().unix(),
+					itemID: uuid()
+				}
+			})),
+			room: room.map(item => ({
+				item: {
+					name: item,
+					createdAt: moment().unix(),
+					itemID: uuid()
+				}
+			})),
+			number: this.state.number
 		};
+		console.log(newRoom);
 		firestore.add({ collection: "rooms" }, newRoom).then(() => {
-			history.push("/maintaince");
+			history.push("/");
 		});
 	};
+	componentDidUpdate() {}
 	render() {
 		return (
 			<div>

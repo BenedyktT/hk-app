@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
+import moment from "moment";
+import uuid from "uuid";
 
 class MaintainceRoomDetail extends Component {
 	state = {
@@ -18,9 +20,32 @@ class MaintainceRoomDetail extends Component {
 		const roomToUpd = rooms.filter(room => room.id === id);
 		const updRoom = {
 			...roomToUpd[0],
-			bathroom: bathroomValue ? [...bathroom, bathroomValue] : [...bathroom],
-			room: roomValue ? [...room, roomValue] : [...room]
+			bathroom: bathroomValue
+				? [
+						...bathroom,
+						{
+							item: {
+								name: bathroomValue,
+								createdAt: moment().unix(),
+								itemID: uuid()
+							}
+						}
+				  ]
+				: [...bathroom],
+			room: roomValue
+				? [
+						...room,
+						{
+							item: {
+								name: roomValue,
+								createdAt: moment().unix(),
+								itemID: uuid()
+							}
+						}
+				  ]
+				: [...room]
 		};
+
 		firestore.update({ collection: "rooms", doc: id }, updRoom);
 		this.setState(() => ({
 			isBathroomAddItemClicked: false,
@@ -36,12 +61,15 @@ class MaintainceRoomDetail extends Component {
 			[name]: value
 		}));
 	};
+	componentDidUpdate() {
+		/* console.log(this.props); */
+	}
 	removeItem = (item, e) => {
 		const { firestore, number, room, bathroom, id } = this.props;
 		const updRoom = {
 			number,
-			room: room.filter(e => e !== item),
-			bathroom: bathroom.filter(e => e !== item)
+			room: room.filter(e => e.name !== item.name),
+			bathroom: bathroom.filter(e => e.name !== item.name)
 		};
 
 		firestore.update({ collection: "rooms", doc: id }, updRoom);
@@ -62,7 +90,6 @@ class MaintainceRoomDetail extends Component {
 	};
 	render() {
 		const { number, room, bathroom } = this.props;
-		console.log(bathroom);
 		const { isBathroomAddItemClicked, isRoomAddItemClicked } = this.state;
 		return (
 			<div className="room-detail">
@@ -92,7 +119,7 @@ class MaintainceRoomDetail extends Component {
 							<ul className="bathroom-col col">
 								{bathroom.map((e, index) => (
 									<li key={index}>
-										{e}{" "}
+										{e.item.name}{" "}
 										<button id="room" onClick={this.removeItem.bind(this, e)}>
 											<i className="fas fa-backspace danger-color"></i>
 										</button>
@@ -121,7 +148,7 @@ class MaintainceRoomDetail extends Component {
 							<ul className="bathroom-col col">
 								{room.map((e, index) => (
 									<li key={index}>
-										{e}{" "}
+										{e.item.name}{" "}
 										<button
 											id="bathroom"
 											onClick={this.removeItem.bind(this, e)}
