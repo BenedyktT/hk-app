@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { firestoreConnect } from "react-redux-firebase";
 
 import FormInput from "./FormInput";
+import moment from "moment";
 
 class AddRoom extends Component {
 	state = {
