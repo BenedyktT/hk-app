@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { firestoreConnect } from "react-redux-firebase";
 import uuid from "uuid";
-
 import FormInput from "./FormInput";
 import moment from "moment";
 
@@ -79,7 +78,7 @@ class AddRoom extends Component {
 			})),
 			number: this.state.number
 		};
-		console.log(newRoom);
+
 		firestore.add({ collection: "rooms" }, newRoom).then(() => {
 			history.push("/");
 		});

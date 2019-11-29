@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Solway&display=swap');
 table.greyGridTable {
     border: 2px solid #FFFFFF;
     width: 100%;
@@ -38,4 +39,8 @@ table.greyGridTable {
   }
   table.greyGridTable tfoot td {
     font-size: 14px;
+  }
+
+  *{
+    font-family: 'Solway', serif;
   }

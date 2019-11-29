@@ -10,6 +10,7 @@ import { rrfProps } from "./store";
 import { fetchRooms } from "./actions/roomActions";
 import { connect } from "react-redux";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
+import ItemDetails from "./components/ItemDetails";
 import AddRoom from "./components/AddRoom";
 
 class App extends React.Component {
@@ -22,10 +23,12 @@ class App extends React.Component {
 						<Header />
 						<Switch>
 							{/* 	<Route path="/" exact component={Home} /> */}
+
 							<Route path="/" exact component={Maintaince} />
 							<Route path="/report" exact component={Rooms} />
 							<Route path="/rooms/:id" component={RoomDetail} />
 							<Route path="/add/room" component={AddRoom} />
+							<Route path="/:roomid/:itemid" component={ItemDetails} />
 						</Switch>
 					</div>
 				</Router>
